@@ -1,4 +1,4 @@
-package org.example.Constants;
+package org.example.constants;
 
 public class ConstantOrders {
     public static final String FIRST_NAME_ORDERS = "Api";

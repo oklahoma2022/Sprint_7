@@ -1,23 +1,23 @@
-import Models.Orders;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
-import org.junit.Before;
+import org.example.api.OrderClient;
+import org.example.models.Order;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import static io.restassured.RestAssured.given;
-import static org.example.Constants.ConstantColors.BLACK;
-import static org.example.Constants.ConstantColors.GREY;
-import static org.example.Constants.ConstantOrders.*;
+import static org.example.constants.ConstantOrders.*;
+import static org.example.constants.ConstantСolors.BLACK;
+import static org.example.constants.ConstantСolors.GREY;
 import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(Parameterized.class)
 public class CreateOrdersParametersTest {
     private final String[] currentColor;
 
+    OrderClient orderClient;
     public CreateOrdersParametersTest(String[] currentColor){
-        this.currentColor = currentColor;;
+        this.currentColor = currentColor;
+        orderClient = new OrderClient();
     }
 
     @Parameterized.Parameters(name = "Тестовые данные: Передаваймый цвет: {0}")
@@ -30,15 +30,10 @@ public class CreateOrdersParametersTest {
         };
     };
 
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru/";
-    }
-
     @Test
     @DisplayName("Проверка cоздания заказа ")
     public void toCreatedOrders(){
-        Orders orders = new Orders(FIRST_NAME_ORDERS,
+        Order order = new Order(FIRST_NAME_ORDERS,
                                     lAST_NAME_ORDERS,
                                     ADDRESS,
                                     METRO_STATION,
@@ -46,15 +41,12 @@ public class CreateOrdersParametersTest {
                                     RENT_TIME,
                                     DELIVERY_DATE
                                     ,COMMENT, currentColor);
-        given()
-                .header("Content-type", "application/json")
+        orderClient.createOrder(order)
+                .then()
+                .statusCode(201)
                 .and()
-                .body(orders)
-                .when()
-                .post("/api/v1/orders")
-                .then().statusCode(201)
-                .and()
-                .assertThat().body("track", notNullValue());
+                .assertThat()
+                .body("track", notNullValue());
     }
 
 }

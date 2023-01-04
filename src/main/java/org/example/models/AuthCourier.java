@@ -1,4 +1,4 @@
-package Models;
+package org.example.models;
 
 public class AuthCourier {
     private String login;

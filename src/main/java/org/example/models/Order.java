@@ -1,8 +1,6 @@
-package Models;
+package org.example.models;
 
-import java.util.List;
-
-public class Orders {
+public class Order {
     private String firstName;
     private String lastName;
     private String address;
@@ -13,15 +11,15 @@ public class Orders {
     private String comment;
     private String[] color;
 
-    public Orders(String firstName,
-                  String lastName,
-                  String address,
-                  Integer metroStation,
-                  String phone,
-                  Integer rentTime,
-                  String deliveryDate,
-                  String comment,
-                  String[] color)
+    public Order(String firstName,
+                 String lastName,
+                 String address,
+                 Integer metroStation,
+                 String phone,
+                 Integer rentTime,
+                 String deliveryDate,
+                 String comment,
+                 String[] color)
     {
         this.firstName=firstName;
         this.lastName=lastName;
@@ -35,7 +33,7 @@ public class Orders {
     }
 
     //пустой класс для ресташура
-    public Orders() {
+    public Order() {
 
     }
 

@@ -1,6 +1,6 @@
-package org.example.Constants;
+package org.example.constants;
 
-public class ConstantColors {
+public class ConstantСolors {
     public static final String BLACK ="BLACK";
     public static final String GREY= "GREY";
 }
