@@ -14,8 +14,8 @@ public class GetAListOrdersTest  {
     @Test
     @DisplayName("Проверка, что в тело возвращается список заказов ")
     public void listOrders(){
-               ListClient.listGet()
-                .then().statusCode(200);
+        listClient.listGet()
+            .then().statusCode(200);
     }
 
 }

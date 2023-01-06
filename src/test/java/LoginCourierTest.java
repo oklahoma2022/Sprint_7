@@ -3,6 +3,8 @@ import org.example.api.CourierClient;
 import org.example.models.AuthCourier;
 import org.example.models.Courier;
 import org.example.services.CourierGenerator;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -13,9 +15,17 @@ public class LoginCourierTest {
 
     Courier courier;
 
+    Integer id;
+
+    //Создаем "рамдомного" курьера для использования данных при тестировании
     public LoginCourierTest() {
         courierClient = new CourierClient();
         courier = CourierGenerator.getRandomCourier();
+    }
+
+    @Before
+    public void toCreateCourier() {
+        courierClient.createCourier(courier);
     }
 
     //курьер может авторизоваться;
@@ -23,10 +33,13 @@ public class LoginCourierTest {
     @DisplayName("Авторизация курьера в системе")
     public void loginCourier() {
         AuthCourier auth = new AuthCourier(courier.getLogin(), courier.getPassword());
-        courierClient.loginCourier(auth)
+        id = courierClient.loginCourier(auth)
             .then().statusCode(200)
             .and()
-            .assertThat().body("id", notNullValue());
+            .assertThat()
+                .body("id", notNullValue())
+                .extract()
+                .path("id");
     }
 
      // для авторизации нужно передать все обязательные поля;
@@ -80,5 +93,14 @@ public class LoginCourierTest {
                 .then().statusCode(404)
                 .and()
                 .assertThat().body("message",equalTo("Учетная запись не найдена"));
+    }
+
+   //Удалям курьера из базы ( убираемся  за собой после окончания проверок)
+   //Если он создан и значения id не пустое
+    @After
+    public void deleteCourier() {
+        if (id != null) {
+            courierClient.deleteCourier(id).then().statusCode(200);
+        }
     }
 }
